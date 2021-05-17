@@ -13,13 +13,18 @@ def Inpput():
         arr.append(row)
             
 Inpput()
-print(arr)
+#print(arr[10]['Username'])
+names=[]
+final={}
 
-def reall():
-    l=len(arr)
-    c=0
-    dat=""
-    #print(arr[2])
-        
 
-reall()
+
+
+
+dat="05/10/21"
+for i in arr:
+    if dat== i['Date']:
+        #print(i['Username'])
+        names.append(i['Username'])
+    final['dat']=names
+print(final['dat'])
