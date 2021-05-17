@@ -14,7 +14,7 @@ def Inpput():
             
 Inpput()
 #print(arr[10]['Username'])
-names=[]
+
 final={}
 dates=[]
 
@@ -26,32 +26,34 @@ def extractDates():
 extractDates()
 
 
+def ToDict():
+    c=0
+    r=0
+    for j in dates:
+        names=[]
+        for i in arr:
+            
+            #j='05/10/21'
+            if i['Date'] == j:
+                names.append(i['Username'])
+            c+=1
+            final[f'{j}']=names
+            if(r<len(dates)-1):
+                r=r+1
 
-
-for i in arr:
-    print('Hi')
-    print(i['Username'])
-    dat='05/10/21'
-    if i[f'{dat}'] in final:
-        print('Hi')
-    else:
-        print('hello')
-
-l='''
-def dictFinal():
-    dat=dates
+ToDict()
     
-    for i in arr:
-        if i['Date'] in dates:
-            #print(i['Username'])
-            names.append(i['Username'])
-    final['{dat}'.format(dat=dat)]=names
-    #print(final)
-'''
+#print(c)
+#print(names)
+#i='05/10/21'
 
+#final[f'{i}']="daksh"
 
+#print(f'{i}')
 
-print(dates)
+#print(i['Username'])
+
+#print(dates)
 
 #dictFinal()
 
