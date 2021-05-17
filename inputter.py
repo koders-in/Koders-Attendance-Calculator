@@ -2,38 +2,42 @@ import csv
 import json  
 import pandas as pd
 
+import sys,os
+file_address=os.path.join(sys.path[0], "Attendance_Sheet.csv")
+
+print(file_address)
+
 arr=[]
 
-
+#'C:/Users/ASUS/Attendance/Koders-Attendance-Calculator/Attendance_Sheet.csv'
 def Inpput():
-    boston=pd.read_csv('C:/Users/ASUS/Attendance/Koders-Attendance-Calculator/Attendance_Sheet.csv')
+    boston=pd.read_csv(file_address)
     l=len(boston)
     i=0
     for ind, row in boston.iterrows():
         arr.append(row)
             
 Inpput()
-#print(arr[10]['Username'])
 
 final={}
 dates=[]
 
-def extractDates():
+def extract_Dates():
     for i in arr:
         if i['Date'] not in dates:
             dates.append(i['Date'])
-    #print(dates)
-extractDates()
+    
+extract_Dates()
 
 
-def ToDict():
+def To_Dict():
     c=0
     r=0
     for j in dates:
         names=[]
         for i in arr:
             
-            #j='05/10/21'
+            
             if i['Date'] == j:
                 names.append(i['Username'])
             c+=1
@@ -41,27 +45,8 @@ def ToDict():
             if(r<len(dates)-1):
                 r=r+1
 
-ToDict()
+To_Dict()
     
-#print(c)
-#print(names)
-#i='05/10/21'
-
-#final[f'{i}']="daksh"
-
-#print(f'{i}')
-
-#print(i['Username'])
-
-#print(dates)
-
-#dictFinal()
-
-#print(final)
-
-
-#dictFinal('05/10/21')
-
 
 attenden={}
 
@@ -70,26 +55,18 @@ def attend():
     for i in dates:
         j=0
         l=len(final.get(i))
-        #print((final.get(i)))
+        
         while j<l:
             n=final.get(i)[j]
             j+=1
-            #print((n))
+            
             if n not in attenden:
                 attenden[f'{n}']=1
             else:
                 attenden[f'{n}']+=1
-    #print(attenden)
+    print(attenden)
 
 
     
     
 attend()
-
-def cleanEntries():
-    for i in dates:
-        n=final.get(i)
-        for j in n:
-            
-
-cleanEntries()
