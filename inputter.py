@@ -10,23 +10,16 @@ def Inpput():
     l=len(boston)
     i=0
     for ind, row in boston.iterrows():
-        while i<l:
-            #print(row)
-            arr.append(row)
-            i+=1
+        arr.append(row)
+            
 Inpput()
+print(arr)
 
 def reall():
     l=len(arr)
     c=0
     dat=""
-    print(dat)
-    
-    for i in arr:
-        if dat=="":
-            dat=i[0]
-            print(dat)
-            
+    #print(arr[2])
         
 
 reall()
