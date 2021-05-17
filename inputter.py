@@ -1,5 +1,5 @@
 import csv 
-
+import json  
 import pandas as pd
 
 arr=[]
@@ -70,16 +70,26 @@ def attend():
     for i in dates:
         j=0
         l=len(final.get(i))
-        print(type(final.get(i)))
+        #print((final.get(i)))
         while j<l:
             n=final.get(i)[j]
             j+=1
-            #print(type(n))
-            
-            
-    print(attenden)
+            #print((n))
+            if n not in attenden:
+                attenden[f'{n}']=1
+            else:
+                attenden[f'{n}']+=1
+    #print(attenden)
 
 
     
     
 attend()
+
+def cleanEntries():
+    for i in dates:
+        n=final.get(i)
+        for j in n:
+            
+
+cleanEntries()
