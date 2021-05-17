@@ -57,7 +57,29 @@ ToDict()
 
 #dictFinal()
 
-print(final)
+#print(final)
 
 
 #dictFinal('05/10/21')
+
+
+attenden={}
+
+def attend():
+    
+    for i in dates:
+        j=0
+        l=len(final.get(i))
+        print(type(final.get(i)))
+        while j<l:
+            n=final.get(i)[j]
+            j+=1
+            #print(type(n))
+            
+            
+    print(attenden)
+
+
+    
+    
+attend()
