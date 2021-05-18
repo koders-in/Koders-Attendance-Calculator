@@ -1,6 +1,4 @@
 import sys,os
-file_address=os.path.join(sys.path[0], "Attendance_Sheet.csv")
-
 
 
 initial_data=[]
@@ -30,4 +28,3 @@ def Search_by_name(name):
     print(counter)
 
 Search_by_name("BenZee")
-
