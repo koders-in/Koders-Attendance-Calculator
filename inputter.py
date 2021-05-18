@@ -29,16 +29,5 @@ def Search_by_name(name):
             counter=counter+1
     print(counter)
 
-
-report=[]
-def Names():
-    names=[]
-    for i in final_data:
-        if i[2] not in names:
-            names.append(i[2])
-    
-
-
-Names()
 Search_by_name("BenZee")
 
