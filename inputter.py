@@ -1,92 +1,99 @@
-import csv 
-import json  
-import pandas as pd
-
 import sys,os
 file_address=os.path.join(sys.path[0], "Attendance_Sheet.csv")
+# GLOBAL VALUES
+data=[]
 
-#print(file_address)
-
-arr=[]
-
-#'C:/Users/ASUS/Attendance/Koders-Attendance-Calculator/Attendance_Sheet.csv'
-def Inpput():
-    boston=pd.read_csv(file_address)
-    l=len(boston)
-    i=0
-    for ind, row in boston.iterrows():
-        arr.append(row)
-            
-Inpput()
-
-final={}
-dates=[]
-Timer=[]
-
-def extract_Dates():
-    for i in arr:
-        if i['Date'] not in dates:
-            dates.append(i['Date'])
+def input_csv():
+    with open(file_address, "r") as file:
+        for line in file.readlines():
+            data.append(line.split(","))
+        del data[0]
 
 
-def extract_Time():
-    for i in arr:
-        if i['Time'] not in Timer:
-            Timer.append(i['Time'])
+# TODO
+# Handle unique values
+def search_by_name(name):
+    try:
+        counter, total_counter = 0,0
+        for each in data:
+            total_counter += 1
+            if each[2].startswith(name):
+                counter=counter+1
+        print("Searched name: " + name ,", " + counter + "/" + total_counter)
+    except Exception as error:
+        print("Something went wrong")
 
-extract_Time() 
 
-
-
-#print(Timer)
-extract_Dates()
-#print(dates)
-
-def To_Dict():
-    c=0
-    r=0
-    for j in dates:
-        names=[]
-        for i in arr:
-            t=i['Time']
-            t1=t[0:2]
-            
-
-            #print(t1,t2,t3)
-            if i['Date'] == j and int(t1)==11 and str(t1) in i['Time']:
-                names.append(i['Username'])
-                names=list(set(names))
-            elif i['Date'] == j and int(t1)==15 and str(t1) in i['Time']:
-                names.append(i['Username'])
-                names=list(set(names))
-            c+=1
-            final[f'{j}']=names
-            if(r<len(dates)-1):
-                r=r+1
-            
-
-To_Dict()
-#print(final)   
-
-attenden={}
-
-def attend():
+# TODO
+def overall_attendance():
+    names=[]
+    temp=0
+    attendance={}
+    attendees={}
     
-    for i in dates:
-        j=0
-        l=len(final.get(i))
+    #creatung a dictionary for unique items as atendance
+    try:
+        for each in data:
+            splitter=each[1].split(':')
+            if  splitter[0]=='11':
+                names.append(each[2])
+                names=list(set(names))
+            elif splitter[0]=='15':
+                names.append(each[2])
+                names=list(set(names))
+            
+            attendance[f'{each[0]}']=names
         
-        while j<l:
-            n=final.get(i)[j]
-            j+=1
-            
-            if n not in attenden:
-                attenden[f'{n}']=1
-            else:
-                attenden[f'{n}']+=1
-    print(attenden)
-
-
+        keysList = list(attendance.keys())
+        
+        #counting each person's attendance and storing in atendees
+        for each in keysList:
+            temp=0
+            legnth=len(attendance.get(each))     
+            while temp<legnth:
+                n=attendance.get(each)[temp]            
+                if n not in attendees:
+                    attendees[f'{n}']=1
+                else:
+                    attendees[f'{n}']+=1
+                temp+=1
+        print(attendees)
+    except Exception as error:
+        print("Something went wrong")
     
-    
-attend()
+
+    #print(splitter)
+# Usage: dictionary, set
+# split(":")[0] - 11, 3
+
+# TODO
+# def weekly_attendance
+
+# TODO
+# def yearly_attendance
+
+# TODO
+# def monthly_attendance
+
+# TODO
+# def visualize_bar
+
+# TODO
+# def visualize_pie
+
+# TODO
+# Name: Benzee
+# Date: 12/05/20
+# Shift: 1- Morning, 2- Post Lunch
+# Present
+# Absent
+
+# TODO
+# cli conversion
+
+# search_by_name("BenZee") # For testing
+
+# Driver code
+if __name__ == '__main__':
+    input_csv()
+    overall_attendance()
