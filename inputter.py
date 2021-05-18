@@ -1,7 +1,10 @@
 import sys,os
+import datetime
+
 file_address=os.path.join(sys.path[0], "Attendance_Sheet.csv")
 # GLOBAL VALUES
 data=[]
+attendance={}
 
 def input_csv():
     with open(file_address, "r") as file:
@@ -10,7 +13,7 @@ def input_csv():
         del data[0]
 
 
-# TODO
+#todo
 # Handle unique values
 def search_by_name(name):
     try:
@@ -24,56 +27,109 @@ def search_by_name(name):
         print("Something went wrong")
 
 
-# TODO
-def overall_attendance():
+def to_get_dict():
     names=[]
-    temp=0
-    attendance={}
-    attendees={}
     
     #creatung a dictionary for unique items as atendance
+    for each in data:
+        splitter=each[1].split(':')
+        if  splitter[0]=='11':
+            names.append(each[2])
+            names=list(set(names))
+        elif splitter[0]=='15':
+            names.append(each[2])
+            names=list(set(names))        
+        attendance[f'{each[0]}']=names
+        
+
+
+def overall_attendance():
+    temp=0
+    attendees={}
     try:
-        for each in data:
-            splitter=each[1].split(':')
-            if  splitter[0]=='11':
-                names.append(each[2])
-                names=list(set(names))
-            elif splitter[0]=='15':
-                names.append(each[2])
-                names=list(set(names))
-            
-            attendance[f'{each[0]}']=names
-        
         keysList = list(attendance.keys())
-        
         #counting each person's attendance and storing in atendees
         for each in keysList:
             temp=0
             legnth=len(attendance.get(each))     
             while temp<legnth:
-                n=attendance.get(each)[temp]            
-                if n not in attendees:
-                    attendees[f'{n}']=1
+                names=attendance.get(each)[temp]            
+                if names not in attendees:
+                    attendees[f'{names}']=1
                 else:
-                    attendees[f'{n}']+=1
+                    attendees[f'{names}']+=1
                 temp+=1
-        print(attendees)
     except Exception as error:
         print("Something went wrong")
     
 
-    #print(splitter)
-# Usage: dictionary, set
-# split(":")[0] - 11, 3
 
-# TODO
-# def weekly_attendance
+def weekly_attendance():
+    Current_Date = datetime.date.today()
+    attendees={}
+    week_dates=[]
+    dated=[]
+    temp=0
+    #to get object of dates of last 7 days
+    while temp<7:
+        Previous_Date = datetime.date.today() - datetime.timedelta(days=temp)
+        week_dates.append(str(Previous_Date))
+        temp+=1
+    #to convert datetime object into the correct format as required
+    for each in week_dates:
+        each=each.split('-')
+        dated.append(str(each[1]+'/'+each[2]+'/'+each[0][2:]))
 
-# TODO
-# def yearly_attendance
+    for each in dated:
+        try:
+            print(str(attendance[f'{each}']))
+        except:
+            print('Leave')
+    
+ 
+def yearly_attendance():
+    Current_Date = datetime.date.today()
+    attendees={}
+    week_dates=[]
+    dated=[]
+    temp=0
+    #to get object of dates of last 365 days
+    while temp<365:
+        Previous_Date = datetime.date.today() - datetime.timedelta(days=temp)
+        week_dates.append(str(Previous_Date))
+        temp+=1
+    #to convert datetime object into the correct format as required
+    for each in week_dates:
+        each=each.split('-')
+        dated.append(str(each[1]+'/'+each[2]+'/'+each[0][2:]))
+    for each in dated:
+        try:
+            print(str(attendance[f'{each}']))
+        except:
+            print('Leave')
+    
 
-# TODO
-# def monthly_attendance
+def monthly_attendance():
+    Current_Date = datetime.date.today()
+    attendees={}
+    week_dates=[]
+    dated=[]
+    temp=0
+    #to get object of dates of last 30 days
+    while temp<30:
+        Previous_Date = datetime.date.today() - datetime.timedelta(days=temp)
+        week_dates.append(str(Previous_Date))
+        temp+=1
+    #to convert datetime object into the correct format as required
+    for each in week_dates:
+        each=each.split('-')
+        dated.append(str(each[1]+'/'+each[2]+'/'+each[0][2:]))    
+    for each in dated:
+        try:
+            print(str(attendance[f'{each}']))
+        except:
+            print('Leave')
+    
 
 # TODO
 # def visualize_bar
@@ -96,4 +152,8 @@ def overall_attendance():
 # Driver code
 if __name__ == '__main__':
     input_csv()
+    to_get_dict()
     overall_attendance()
+    weekly_attendance()
+    monthly_attendance()
+    yearly_attendance()
