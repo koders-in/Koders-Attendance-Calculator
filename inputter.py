@@ -8,7 +8,7 @@ file_address=os.path.join(sys.path[0], "Attendance_Sheet.csv")
 
 final={}
 dates=[]
-
+arr=[]
 def input():
     boston=pd.read_csv(file_address)
     l=len(boston)
@@ -48,7 +48,7 @@ def attend():
                 attendance[f'{n}']=1
             else:
                 attendance[f'{n}']+=1
-    print(attendance)
+    print(attend(attendance))
 
 input()
 extract_Dates()
