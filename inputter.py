@@ -5,7 +5,7 @@ import pandas as pd
 import sys,os
 file_address=os.path.join(sys.path[0], "Attendance_Sheet.csv")
 
-print(file_address)
+#print(file_address)
 
 arr=[]
 
@@ -21,14 +21,26 @@ Inpput()
 
 final={}
 dates=[]
+Timer=[]
 
 def extract_Dates():
     for i in arr:
         if i['Date'] not in dates:
             dates.append(i['Date'])
-    
-extract_Dates()
 
+
+def extract_Time():
+    for i in arr:
+        if i['Time'] not in Timer:
+            Timer.append(i['Time'])
+
+extract_Time() 
+
+
+
+#print(Timer)
+extract_Dates()
+#print(dates)
 
 def To_Dict():
     c=0
@@ -36,17 +48,25 @@ def To_Dict():
     for j in dates:
         names=[]
         for i in arr:
+            t=i['Time']
+            t1=t[0:2]
             
-            
-            if i['Date'] == j:
+
+            #print(t1,t2,t3)
+            if i['Date'] == j and int(t1)==11 and str(t1) in i['Time']:
                 names.append(i['Username'])
+                names=list(set(names))
+            elif i['Date'] == j and int(t1)==15 and str(t1) in i['Time']:
+                names.append(i['Username'])
+                names=list(set(names))
             c+=1
             final[f'{j}']=names
             if(r<len(dates)-1):
                 r=r+1
+            
 
 To_Dict()
-    
+#print(final)   
 
 attenden={}
 
