@@ -5,6 +5,7 @@ import datetime
 
 # GLOBAL VALUES
 data=[]
+dates=[]
 attendance={}
 
 def input_csv():
@@ -29,22 +30,40 @@ def search_by_name(name):
         print("Something went wrong")
         print("Error" + str(error))
 
+def to_get_dates():
+    for each in data:
+        if each[0] not in dates:
+            dates.append(each[0])
+    print(dates)
+
 
 def to_get_dict():
-    names=[]
-    #creating a dictionary for unique items as atendance
-    for each in data:
-        splitter=each[1].split(':')
-        if  splitter[0]=='11':
-            names.append(each[2])
-            names=list(set(names))
-            attendance[f'{each[0]}']=names
-        elif splitter[0]=='15':
-            names.append(each[2])
-            names=list(set(names))        
-            attendance[f'{each[0]}']=names
-    #print(attendance)
-
+    
+    
+    for eachh in dates:
+        l=len(data)
+        names1=[]
+        names2=[]
+        morning_shift={}
+        evening_shift={}
+        temp=0
+        #print(l)
+        while temp<l:
+            if eachh==data[temp][0] and data[temp][1].startswith('11'):
+                #print(data[temp][2])
+                names1.append(data[temp][2])
+                names1=list(set(names1))
+            elif eachh==data[temp][0] and data[temp][1].startswith('15'):
+                #print(data[temp][2])
+                names2.append(data[temp][2])
+                names2=list(set(names2))
+            temp+=1
+        morning_shift['Morning Shift']=names1
+        evening_shift['Evening Shift']=names2
+        #print(morning_shift)
+        #print(evening_shift)
+        attendance[f'{eachh}']=[morning_shift,evening_shift]      
+    print(attendance)
 def overall_attendance():
     temp=0
     attendees={}
@@ -188,21 +207,22 @@ def cli_conversion():
         to_continue=input('Enter:   ').capitalize()
         if to_continue=='N':
             break
-        
-
 
 # search_by_name("BenZee") # For testing
 
 # Driver code
 if __name__ == '__main__':
     input_csv()
+    to_get_dates()
     to_get_dict()
     # search_by_name('BenZee')
-    # overall_attendance()
+    #overall_attendance()
     # weekly_attendance()
     #monthly_attendance()
     # yearly_attendance()
-    cli_conversion()
+    #cli_conversion()
 
 #After reading csv file we moving through graph ploting....!
+
+#TODO  Switch to be used
 
