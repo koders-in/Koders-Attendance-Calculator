@@ -41,14 +41,14 @@ def to_get_dict():
     
     
     for eachh in dates:
-        l=len(data)
+        legnth_of_data_set=len(data)
         names1=[]
         names2=[]
         morning_shift={}
         evening_shift={}
         temp=0
         #print(l)
-        while temp<l:
+        while temp<legnth_of_data_set:
             if eachh==data[temp][0] and data[temp][1].startswith('11'):
                 #print(data[temp][2])
                 names1.append(data[temp][2])
