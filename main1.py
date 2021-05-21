@@ -199,6 +199,8 @@ def graph(i):
 
 ani=animation.FuncAnimation(fig,graph,interval=10)
 plt.show()
+ani=animation.FuncAnimation(fig,graph,interval=1000)
+plt.show()
 # TODO
 #deepak check the to_det_dict function to get the correct output
 #check the output by matching with data.csv to see it is showing correct output according to entries on a particular day
