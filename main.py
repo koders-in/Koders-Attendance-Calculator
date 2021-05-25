@@ -26,17 +26,16 @@ def input_csv():
 
 def search_by_name(name):
     try:
-        name=name
-        names1=[]
-        names2=[]
-        count=[]
         counter, total_counter = 0, len(dates*2)
-        for each in data:
-            if each[2].startswith(name):
-                counter+=1
-
+        for each in dates:
+            for eachh in attendance[f'{each}']:
+                for eachhh in eachh:
+                    if name in eachhh:
+                        counter+=1
+                
+            
         print("Searched name: " + name ,", " + str(counter) + "/" + str(total_counter))
-        #return counter
+        return counter
     except Exception as error:
         print("Something went wrong")
         print("Error" + str(error))
@@ -72,9 +71,10 @@ def to_get_dict():
                 names2.append(data[temp][2])
                 names2=list(set(names2))
             temp+=1
-        morning_shift['Morning Shift']=names1
-        evening_shift['Evening Shift']=names2
-        attendance[f'{eachh}']=[morning_shift,evening_shift]      
+        # morning_shift['Morning Shift']=names1
+        # evening_shift['Evening Shift']=names2
+        attendance[f'{eachh}']=[names1,names2]      
+    #print(attendance)
     return (attendance)
 
 
@@ -175,22 +175,30 @@ def monthly_attendance():
 
 
 # TODO
-def visualize_bar():
+def visualize_bar_overall_attendance():
     x=[]
     y=[]
     #print(attendees)
     for each in names:
-        search_by_name(each)
-        x.append(Counter)
-        y.append(each)
-    print(x)
+        count=search_by_name(each)
+        y.append(count)
+        x.append(each)
+    #print(x)
     #print(y)
-    #plt.barh(x, y)
-    #plt.show()
+    plt.barh(x, y)
+    plt.show()
 
+def visualize_pie_graph_search_by_name(name):
+    count=search_by_name(name)
+    print(count)
+    y = [len(dates*2),count]
+    mylabels = [f"{name} {count}",f"overall attendance {len(dates*2)}"]
 
-
-
+    plt.pie(y, labels = mylabels,  startangle = 0)
+    plt.show() 
+x=[10,100,20,30]
+plt.hist(x)
+plt.show() 
 
 # TODO
 def cli_conversion():
@@ -201,6 +209,8 @@ def cli_conversion():
         print("For weekly attendance press 3")
         print("For monthly attendance press 4")
         print('For yearly attendance press 5')
+        print('For overall attenadce graph press 6')
+        print('For pie graph for person press 7')
         choice=int(input('Enter:  '))
 
         if choice ==1:
@@ -213,6 +223,10 @@ def cli_conversion():
             monthly_attendance()
         elif choice ==5:
             yearly_attendance()
+        elif choice ==6:
+            visualize_bar_overall_attendance()
+        elif choice ==7:
+            visualize_pie_graph_search_by_name(input('Enter name:   '))
         else:
             print('wrong input')
 
@@ -229,14 +243,14 @@ if __name__ == '__main__':
     to_get_dates()
     to_get_names()
     to_get_dict()
-    search_by_name('Ritesh')
-    # overall_attendance()
+    #search_by_name('Ritesh')
+    #overall_attendance()
     # weekly_attendance()
     # monthly_attendance()
     # yearly_attendance()
     # cli_conversion()
-    # visualize_bar()
-    
+    # visualize_bar_overall_attendance()
+    # visualize_pie_graph_search_by_name('XHunter')
 
 #After reading csv file we moving through graph ploting....!
 
