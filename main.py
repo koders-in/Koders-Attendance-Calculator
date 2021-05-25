@@ -59,7 +59,7 @@ def to_get_dict():
     return(attendance)
 
 def overall_attendance():
-    temp=0 
+     
     try:
         for each in names:
             count=0
@@ -93,6 +93,7 @@ def weekly_attendance():
             print(attendance[f'{each}'])
         except Exception as error:
             print("Error" + str(error))
+    return dated
 
 def yearly_attendance():
     current_date = datetime.datetime.today()
@@ -118,7 +119,7 @@ def yearly_attendance():
             print(attendance[f'{each}'])
         except Exception as error:
             print("Error" + str(error))
-
+    return(dated)
 
 def monthly_attendance():
     current_date = datetime.datetime.today()
@@ -144,6 +145,7 @@ def monthly_attendance():
             print(attendance[f'{each}'])
         except Exception as error:
             print("Error" + str(error))
+    return(dated)
 
 def visualize_bar_overall_attendance():
     x=[]
@@ -165,6 +167,30 @@ def visualize_pie_graph_search_by_name(name):
     plt.pie(y, labels = mylabels,  startangle = 0)
     plt.show() 
 
+def weeklY_bar():
+    weekly_attendees={}
+    
+    dated=weekly_attendance()
+    for each in dated:
+        
+        for name in names:
+            counter=0
+            for eachh in attendance[f'{each}']:
+                
+                for eachhh in eachh:
+                    
+                    if name in eachhh:
+                        counter+=1
+                weekly_attendees[f'{name}']=counter
+
+    y =list(weekly_attendees.values())
+
+    x =list(weekly_attendees.keys())
+    
+
+    plt.barh(x,y)
+    plt.show()
+    
 def cli_conversion():
     while True:
         print('Do you want to continue: Y/N')
@@ -175,6 +201,8 @@ def cli_conversion():
         print('For yearly attendance press 5')
         print('For overall attenadce graph press 6')
         print('For pie graph for person press 7')
+        print('For weekly bar graph for person press 8')
+
         choice=int(input('Enter:  '))
 
         if choice ==1:
@@ -193,6 +221,8 @@ def cli_conversion():
             visualize_bar_overall_attendance()
         elif choice ==7:
             visualize_pie_graph_search_by_name(input('Enter name:   '))
+        elif choice ==8:
+            weeklY_bar()
         else:
             print('wrong input')
 
@@ -210,11 +240,11 @@ if __name__ == '__main__':
     # search_by_name('Ritesh')
     # overall_attendance()
     # weekly_attendance()
+    # visualize_bar_weekly_attendance()
     # monthly_attendance()
     # yearly_attendance()
     cli_conversion()
     #visualize_bar_overall_attendance()
     # visualize_pie_graph_search_by_name('XHunter')
-
-# TODO
-# Remove dead code
+    #weeklY_bar()
+    
