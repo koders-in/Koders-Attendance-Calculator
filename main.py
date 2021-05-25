@@ -2,10 +2,7 @@ import sys,os
 import datetime
 from typing import Counter
 
-
-
 import matplotlib.pyplot as plt
-
 #date = datetime.datetime(int(year), int(month), 1)
 
 # GLOBAL VALUES
@@ -27,7 +24,6 @@ def to_get_dates():
             dates.append(each[0])
 
 def to_get_names():
-
     for each in data:
         if each[2] not in names:
             names.append(each[2])
@@ -40,21 +36,12 @@ def search_by_name(name):
                 for eachhh in eachh:
                     if name in eachhh:
                         counter+=1
-                
-            
-        
         return counter
     except Exception as error:
         print("Something went wrong")
         print("Error" + str(error))
 
-
-        
-
-
 def to_get_dict():
-    
-    
     for eachh in dates:
         legnth_of_data_set=len(data)
         names1=[]
@@ -69,9 +56,7 @@ def to_get_dict():
                 names2=list(set(names2))
             temp+=1
         attendance[f'{eachh}']=[names1,names2]      
-    
     return(attendance)
-
 
 def overall_attendance():
      
@@ -162,7 +147,6 @@ def monthly_attendance():
             print("Error" + str(error))
     return(dated)
 
-
 def visualize_bar_overall_attendance():
     x=[]
     y=[]
@@ -180,7 +164,6 @@ def visualize_pie_graph_search_by_name(name):
     print(count)
     y = [len(dates*2),count]
     mylabels = [f"{name} {count}",f"overall attendance {len(dates*2)}"]
-
     plt.pie(y, labels = mylabels,  startangle = 0)
     plt.show() 
 
@@ -207,9 +190,7 @@ def weeklY_bar():
 
     plt.barh(x,y)
     plt.show()
-
-
-
+    
 def cli_conversion():
     while True:
         print('Do you want to continue: Y/N')
@@ -250,8 +231,6 @@ def cli_conversion():
         if to_continue=='N':
             break
 
-
-
 # Driver code
 if __name__ == '__main__':
     input_csv()
@@ -269,5 +248,3 @@ if __name__ == '__main__':
     # visualize_pie_graph_search_by_name('XHunter')
     #weeklY_bar()
     
-
-
