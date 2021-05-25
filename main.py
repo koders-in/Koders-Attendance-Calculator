@@ -1,7 +1,8 @@
 import sys,os
 import datetime
+from typing import Counter
+import numpy as np
 
-import pandas as pd
 
 import matplotlib.pyplot as plt
 
@@ -26,12 +27,16 @@ def input_csv():
 def search_by_name(name):
     try:
         name=name
-        counter, total_counter = 0,0
+        names1=[]
+        names2=[]
+        count=[]
+        counter, total_counter = 0, len(dates*2)
         for each in data:
-            total_counter += 1
             if each[2].startswith(name):
-                counter=counter+1
-        print("Searched name: " + name ,", " + str(counter) + "/" + str(total_counter-1))
+                counter+=1
+
+        print("Searched name: " + name ,", " + str(counter) + "/" + str(total_counter))
+        #return counter
     except Exception as error:
         print("Something went wrong")
         print("Error" + str(error))
@@ -70,25 +75,18 @@ def to_get_dict():
         morning_shift['Morning Shift']=names1
         evening_shift['Evening Shift']=names2
         attendance[f'{eachh}']=[morning_shift,evening_shift]      
-    #print(attendance)
+    return (attendance)
 
 
 def overall_attendance():
     temp=0
     
+    
     try:
-    #creatung a dictionary for unique items as atendance
-        to_get_dict()
-        
-        for each in data:
-            legnth=len(names)
-            while temp<legnth:
-                if each[2]==names[temp]:            
-                    if names not in attendees:
-                        attendees[f'{names}']=1
-                    else:
-                        attendees[f'{names}']+=1
-                temp+=1
+        for each in names:
+            count=0
+            count=search_by_name(each)
+            attendees[f'{each}']=count
         print(attendees)
     except Exception as error:
         print("Something went wrong")
@@ -177,7 +175,20 @@ def monthly_attendance():
 
 
 # TODO
-# def visualize_pie
+def visualize_bar():
+    x=[]
+    y=[]
+    #print(attendees)
+    for each in names:
+        search_by_name(each)
+        x.append(Counter)
+        y.append(each)
+    print(x)
+    #print(y)
+    #plt.barh(x, y)
+    #plt.show()
+
+
 
 
 
@@ -218,12 +229,13 @@ if __name__ == '__main__':
     to_get_dates()
     to_get_names()
     to_get_dict()
-    # search_by_name('BenZee')
-    #overall_attendance()
+    search_by_name('Ritesh')
+    # overall_attendance()
     # weekly_attendance()
     # monthly_attendance()
     # yearly_attendance()
-    cli_conversion()
+    # cli_conversion()
+    # visualize_bar()
     
 
 #After reading csv file we moving through graph ploting....!
