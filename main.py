@@ -21,8 +21,16 @@ def input_csv():
             data.append(line.split(","))
         del data[0]
 
-# TODO
-# Handle unique values
+def to_get_dates():
+    for each in data:
+        if each[0] not in dates:
+            dates.append(each[0])
+
+def to_get_names():
+
+    for each in data:
+        if each[2] not in names:
+            names.append(each[2])
 
 def search_by_name(name):
     try:
@@ -34,22 +42,13 @@ def search_by_name(name):
                         counter+=1
                 
             
-        print("Searched name: " + name ,", " + str(counter) + "/" + str(total_counter))
+        
         return counter
     except Exception as error:
         print("Something went wrong")
         print("Error" + str(error))
 
-def to_get_dates():
-    for each in data:
-        if each[0] not in dates:
-            dates.append(each[0])
 
-def to_get_names():
-
-    for each in data:
-        if each[2] not in names:
-            names.append(each[2])
         
 
 
@@ -60,8 +59,6 @@ def to_get_dict():
         legnth_of_data_set=len(data)
         names1=[]
         names2=[]
-        morning_shift={}
-        evening_shift={}
         temp=0
         while temp<legnth_of_data_set:
             if eachh==data[temp][0] and data[temp][1].startswith('11'):
@@ -71,29 +68,24 @@ def to_get_dict():
                 names2.append(data[temp][2])
                 names2=list(set(names2))
             temp+=1
-        # morning_shift['Morning Shift']=names1
-        # evening_shift['Evening Shift']=names2
         attendance[f'{eachh}']=[names1,names2]      
-    #print(attendance)
-    return (attendance)
+    
+    return(attendance)
 
 
 def overall_attendance():
-    temp=0
-    
-    
+    temp=0 
     try:
         for each in names:
             count=0
             count=search_by_name(each)
             attendees[f'{each}']=count
-        print(attendees)
+        return attendees
     except Exception as error:
         print("Something went wrong")
 
 def weekly_attendance():
     current_date = datetime.datetime.today()
-    attendees = {}
     week_dates = []
     dated = []
     temp = 0
@@ -119,7 +111,6 @@ def weekly_attendance():
 
 def yearly_attendance():
     current_date = datetime.datetime.today()
-    attendees = {}
     week_dates = []
     dated = []
     temp = 0
@@ -146,7 +137,6 @@ def yearly_attendance():
 
 def monthly_attendance():
     current_date = datetime.datetime.today()
-    attendees = {}
     week_dates = []
     dated = []
     temp = 0
@@ -171,20 +161,16 @@ def monthly_attendance():
             print("Error" + str(error))
 
 
-# TODO
 
-
-# TODO
 def visualize_bar_overall_attendance():
     x=[]
     y=[]
-    #print(attendees)
     for each in names:
         count=search_by_name(each)
         y.append(count)
         x.append(each)
-    #print(x)
-    #print(y)
+    y.append((len(dates)*2))
+    x.append('Total shifts')
     plt.barh(x, y)
     plt.show()
 
@@ -196,9 +182,6 @@ def visualize_pie_graph_search_by_name(name):
 
     plt.pie(y, labels = mylabels,  startangle = 0)
     plt.show() 
-x=[10,100,20,30]
-plt.hist(x)
-plt.show() 
 
 # TODO
 def cli_conversion():
@@ -214,9 +197,11 @@ def cli_conversion():
         choice=int(input('Enter:  '))
 
         if choice ==1:
-            search_by_name(input('Enter name:   '))
+            name=input('Enter name:   ')
+            counter=search_by_name(name)
+            print("Searched name: " + name ,", " + str(counter) + "/" + str(len(dates)*2))
         elif choice ==2:
-            overall_attendance()
+            print(overall_attendance())
         elif choice ==3:
             weekly_attendance()
         elif choice ==4:
@@ -235,7 +220,7 @@ def cli_conversion():
         if to_continue=='N':
             break
 
-# search_by_name("BenZee") # For testing
+
 
 # Driver code
 if __name__ == '__main__':
@@ -243,16 +228,16 @@ if __name__ == '__main__':
     to_get_dates()
     to_get_names()
     to_get_dict()
-    #search_by_name('Ritesh')
-    #overall_attendance()
+    # search_by_name('Ritesh')
+    # overall_attendance()
     # weekly_attendance()
     # monthly_attendance()
     # yearly_attendance()
-    # cli_conversion()
-    # visualize_bar_overall_attendance()
+    cli_conversion()
+    #visualize_bar_overall_attendance()
     # visualize_pie_graph_search_by_name('XHunter')
 
-#After reading csv file we moving through graph ploting....!
+
 
 
 
