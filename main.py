@@ -1,8 +1,8 @@
 import sys,os
 import datetime
 from typing import Counter
-
 import matplotlib.pyplot as plt
+
 #date = datetime.datetime(int(year), int(month), 1)
 
 # GLOBAL VALUES
@@ -32,34 +32,38 @@ def search_by_name(name):
     try:
         counter, total_counter = 0, len(dates*2)
         for each in dates:
-            for eachh in attendance[f'{each}']:
-                for eachhh in eachh:
-                    if name in eachhh:
+            for each in attendance[f'{each}']:
+                for each in each:
+                    if name in each:
                         counter+=1
         return counter
     except Exception as error:
-        print("Something went wrong")
-        print("Error" + str(error))
+        print("Something went wrong. Error" + str(error))
 
 def to_get_dict():
-    for eachh in dates:
+    for each in dates:
         legnth_of_data_set=len(data)
         names1=[]
         names2=[]
         temp=0
         while temp<legnth_of_data_set:
-            if eachh==data[temp][0] and data[temp][1].startswith('11'):
+            if each==data[temp][0] and data[temp][1].startswith('11'):
                 names1.append(data[temp][2])
                 names1=list(set(names1))
-            elif eachh==data[temp][0] and data[temp][1].startswith('15'):
+            elif each==data[temp][0] and data[temp][1].startswith('15'):
                 names2.append(data[temp][2])
                 names2=list(set(names2))
             temp+=1
-        attendance[f'{eachh}']=[names1,names2]      
+        attendance[f'{each}']=[names1,names2]      
     return(attendance)
 
+def initialize():
+    input_csv()
+    to_get_dates()
+    to_get_names()
+    to_get_dict()
+
 def overall_attendance():
-     
     try:
         for each in names:
             count=0
@@ -75,14 +79,13 @@ def weekly_attendance():
     dated = []
     temp = 0
 
-    # to get object of dates of last 7 days
-    while temp < 7:
+    while temp < 7:    # to get object of dates of last 7 days
         previous_date = current_date - datetime.timedelta(days=temp)
         week_dates.append(previous_date)
         temp+=1
 
-    #to convert datetime object into the correct format as required
-    for each in week_dates:
+
+    for each in week_dates:    # to convert datetime object into the correct format as required
         day = each.strftime("%A")
         if day != "Sunday" and day != "Saturday":
             formatted_time = each.strftime("%m/%d/%y")
@@ -92,7 +95,7 @@ def weekly_attendance():
         try:
             print(attendance[f'{each}'])
         except Exception as error:
-            print("Error" + str(error))
+            print("Error occured." + str(error))
     return dated
 
 def yearly_attendance():
@@ -101,14 +104,12 @@ def yearly_attendance():
     dated = []
     temp = 0
 
-    # to get object of dates of last 365 days
-    while temp < 365:
+    while temp < 365:    # to get object of dates of last 365 days
         previous_date = current_date - datetime.timedelta(days=temp)
         week_dates.append(previous_date)
         temp+=1
 
-    #to convert datetime object into the correct format as required
-    for each in week_dates:
+    for each in week_dates:    #to convert datetime object into the correct format as required
         day = each.strftime("%A")
         if day != "Sunday" and day != "Saturday":
             formatted_time = each.strftime("%m/%d/%y")
@@ -118,7 +119,7 @@ def yearly_attendance():
         try:
             print(attendance[f'{each}'])
         except Exception as error:
-            print("Error" + str(error))
+            print("Error occured." + str(error))
     return(dated)
 
 def monthly_attendance():
@@ -127,14 +128,12 @@ def monthly_attendance():
     dated = []
     temp = 0
 
-    # to get object of dates of last 7 days
-    while temp < 30:
+    while temp < 30:    # to get object of dates of last 7 days
         previous_date = current_date - datetime.timedelta(days=temp)
         week_dates.append(previous_date)
         temp+=1
 
-    #to convert datetime object into the correct format as required
-    for each in week_dates:
+    for each in week_dates:    #to convert datetime object into the correct format as required
         day = each.strftime("%A")
         if day != "Sunday" and day != "Saturday":
             formatted_time = each.strftime("%m/%d/%y")
@@ -169,25 +168,17 @@ def visualize_pie_graph_search_by_name(name):
 
 def weeklY_bar():
     weekly_attendees={}
-    
     dated=weekly_attendance()
     for each in dated:
-        
         for name in names:
             counter=0
-            for eachh in attendance[f'{each}']:
-                
-                for eachhh in eachh:
-                    
-                    if name in eachhh:
+            for each in attendance[f'{each}']:
+                for each in each:
+                    if name in each:
                         counter+=1
                 weekly_attendees[f'{name}']=counter
-
     y =list(weekly_attendees.values())
-
     x =list(weekly_attendees.keys())
-    
-
     plt.barh(x,y)
     plt.show()
     
@@ -203,48 +194,46 @@ def cli_conversion():
         print('For pie graph for person press 7')
         print('For weekly bar graph for person press 8')
 
-        choice=int(input('Enter:  '))
-
-        if choice ==1:
-            name=input('Enter name:   ')
-            counter=search_by_name(name)
-            print("Searched name: " + name ,", " + str(counter) + "/" + str(len(dates)*2))
-        elif choice ==2:
-            print(overall_attendance())
-        elif choice ==3:
-            weekly_attendance()
-        elif choice ==4:
-            monthly_attendance()
-        elif choice ==5:
-            yearly_attendance()
-        elif choice ==6:
-            visualize_bar_overall_attendance()
-        elif choice ==7:
-            visualize_pie_graph_search_by_name(input('Enter name:   '))
-        elif choice ==8:
-            weeklY_bar()
-        else:
-            print('wrong input')
-
-        print('Do you want to continue: Y/N')
-        to_continue=input('Enter:   ').capitalize()
-        if to_continue=='N':
-            break
+        choice = None
+        while(choice != 0): # Running till exit
+            choice=int(input('Enter:  '))
+            if choice ==1:
+                name=input('Enter name:   ')
+                counter=search_by_name(name)
+                print("Searched name: " + name ,", " + str(counter) + "/" + str(len(dates)*2))
+            elif choice ==2:
+                print(overall_attendance())
+            elif choice ==3:
+                weekly_attendance()
+            elif choice ==4:
+                monthly_attendance()
+            elif choice ==5:
+                yearly_attendance()
+            elif choice ==6:
+                visualize_bar_overall_attendance()
+            elif choice ==7:
+                visualize_pie_graph_search_by_name(input('Enter name:   '))
+            elif choice ==8:
+                weeklY_bar()
+            elif choice ==0:
+                exit(0)
+            else:
+                print('wrong input')
 
 # Driver code
 if __name__ == '__main__':
-    input_csv()
-    to_get_dates()
-    to_get_names()
-    to_get_dict()
+    initialize() # One for all intial functions
+    cli_conversion()
+
+    # TODO
+    # FOR TESTING PURPOSES ONLY. PLEASE REMOVE AT THE TIME OF PRODUCTION
+    # visualize_bar_overall_attendance()
+    # visualize_pie_graph_search_by_name('XHunter')
+    # weeklY_bar()
     # search_by_name('Ritesh')
     # overall_attendance()
     # weekly_attendance()
     # visualize_bar_weekly_attendance()
     # monthly_attendance()
     # yearly_attendance()
-    cli_conversion()
-    #visualize_bar_overall_attendance()
-    # visualize_pie_graph_search_by_name('XHunter')
-    #weeklY_bar()
     
