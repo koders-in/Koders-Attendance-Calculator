@@ -184,28 +184,28 @@ def visualize_pie_graph_search_by_name(name):
     plt.title('TOTAL ATTENDANCE OF A SINGLE PERSON')
     plt.show() 
 
-def weeklY_bar():
+def weekly_bar():
     weekly_attendees={}
-    dated=weekly_attendance()
-    #print(dated)
-    for each in dated:
-        
-        for name in names:
-            counter=6
-            for eachh in attendance[f'{each}']:
-                
-                for eachhh in eachh:
-                    
-                    if name in eachhh:
-                        counter+=1
-                    weekly_attendees[f'{name}']=counter
+    weekly_name=[]
 
+    dated=weekly_attendance()
+    for date in dated:
+        for each_attendance in attendance[f'{date}']:
+            for each in each_attendance:
+                weekly_name.append(each)
+
+    for each in names:
+        counter=0
+        counter=weekly_name.count(each)
+        weekly_attendees[f'{each}']=counter
     y =list(weekly_attendees.values())
 
     x =list(weekly_attendees.keys())
-    
-    plt.barh(x,y)
-    plt.title('TOTAL WEEKLY ATTENDANCE')
+
+    y.append(10)
+    x.append('Total attendance')
+    plt.barh(x,y, color='brown')
+    plt.title('Total Weekly Attendance')
     plt.show()
 
 def monthly_bar():
@@ -265,7 +265,7 @@ def cli_conversion():
         elif choice ==7:
             visualize_pie_graph_search_by_name(input('Enter name:   '))
         elif choice ==8:
-            weeklY_bar()
+            weekly_bar()
         else:
             print('wrong input')
 
@@ -291,7 +291,7 @@ if __name__ == '__main__':
     cli_conversion()
     visualize_bar_overall_attendance()
     # visualize_pie_graph_search_by_name('XHunter')
-    weeklY_bar()
+    weekly_bar()
     monthly_bar()
 
 
