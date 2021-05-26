@@ -32,6 +32,7 @@ def to_get_names():
         if each[2] not in names:
             name=each[2]
             name=name.split('#')[0]
+            name=name.lower()
             names.append(name)
 
 
@@ -50,11 +51,13 @@ def to_get_dict():
             if eachh==data[temp][0] and data[temp][1].startswith('11'):
                 name=data[temp][2]
                 name=name.split('#')[0]
+                name=name.lower()
                 names1.append(name)
                 names1=list(set(names1))
             elif eachh==data[temp][0] and data[temp][1].startswith('15'):
                 name=data[temp][2]
                 name=name.split('#')[0]
+                name=name.lower()
                 names2.append(name)
                 names2=list(set(names2))
             temp+=1
@@ -64,6 +67,7 @@ def to_get_dict():
 
 def search_by_name(name):
     try:
+        name=name.lower()
         counter, total_counter = 0, len(dates*2)
         for each in dates:
             for eachh in attendance[f'{each}']:
@@ -199,6 +203,7 @@ def visualize_pie_graph_search_by_name(name):
 def compare(names_to_compare):
     x,y=[],[]
     for name in names_to_compare:
+        name=name.lower()
         counter=search_by_name(name)
         x.append(name)
         y.append(counter)
@@ -211,6 +216,7 @@ def pie_compare(namess):
     y=[]
     mylabels=[]
     for name in namess:
+        name=name.lower()
         count=search_by_name(name)
         print(count)
         y.append(count)
