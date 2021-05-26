@@ -221,7 +221,7 @@ def pie_compare(namess):
     plt.pie(y, labels = mylabels,  startangle = 0)
     plt.show() 
 
-def weeklY_bar():
+def weekly_bar():
     weekly_attendees={}
     weekly_name=[]
     
@@ -235,7 +235,6 @@ def weeklY_bar():
         counter=0
         counter=weekly_name.count(each)
         weekly_attendees[f'{each}']=counter
-    print(weekly_attendees)
     y =list(weekly_attendees.values())
 
     x =list(weekly_attendees.keys())
