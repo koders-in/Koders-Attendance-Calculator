@@ -1,12 +1,8 @@
 import sys,os
 import datetime
 from typing import Counter
-
-
-
 import matplotlib.pyplot as plt
 
-#date = datetime.datetime(int(year), int(month), 1)
 
 # GLOBAL VALUES
 data=[]
@@ -230,7 +226,6 @@ def weeklY_bar():
     weekly_attendees={}
     
     dated=weekly_attendance()
-    #print(dated)
     
     for each in dated:
         
@@ -252,31 +247,6 @@ def weeklY_bar():
     plt.show()
 
 
-future_featur='''
-def monthly_bar():
-    monthly_attendees={}
-    
-    dated=monthly_attendance()
-    for each in dated:
-        
-        for name in names:
-            counter=0
-            for eachh in attendance[f'{each}']:
-                
-                for eachhh in eachh:
-                    
-                    if name in eachhh:
-                        counter+=1
-                monthly_attendees[f'{name}']=counter
-
-    y =list(monthly_attendees.values())
-
-    x =list(monthly_attendees.keys())
-    
-
-    plt.barh(x,y)
-    plt.show()
-'''
 
 def cli_conversion():
     while True:
@@ -336,17 +306,7 @@ if __name__ == '__main__':
     to_get_dates()
     to_get_names()
     to_get_dict()
-    # search_by_name('Ritesh')
-    # overall_attendance()
-    # weekly_attendance()
-    # visualize_bar_weekly_attendance()
-    # monthly_attendance()
-    # yearly_attendance()
     cli_conversion()
-    # visualize_bar_overall_attendance()
-    # visualize_pie_graph_search_by_name('XHunter')
-    # weeklY_bar()
-    #monthly_bar()
-    #compare('Ritesh','BenZee')
-
+    
+    
 
