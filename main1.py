@@ -191,7 +191,7 @@ def weeklY_bar():
     for each in dated:
         
         for name in names:
-            counter=0
+            counter=6
             for eachh in attendance[f'{each}']:
                 
                 for eachhh in eachh:
@@ -205,7 +205,7 @@ def weeklY_bar():
     x =list(weekly_attendees.keys())
     
     plt.barh(x,y)
-    plt.title('TOTAL WEELY ATTENDANCE')
+    plt.title('TOTAL WEEKLY ATTENDANCE')
     plt.show()
 
 def monthly_bar():
