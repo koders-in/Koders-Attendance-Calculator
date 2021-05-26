@@ -2,7 +2,10 @@ import sys,os
 import datetime
 from typing import Counter
 
+
+
 import matplotlib.pyplot as plt
+
 #date = datetime.datetime(int(year), int(month), 1)
 
 # GLOBAL VALUES
@@ -24,9 +27,40 @@ def to_get_dates():
             dates.append(each[0])
 
 def to_get_names():
+    
     for each in data:
         if each[2] not in names:
-            names.append(each[2])
+            name=each[2]
+            name=name.split('#')[0]
+            names.append(name)
+
+
+
+
+
+def to_get_dict():
+    
+    
+    for eachh in dates:
+        legnth_of_data_set=len(data)
+        names1=[]
+        names2=[]
+        temp=0
+        while temp<legnth_of_data_set:
+            if eachh==data[temp][0] and data[temp][1].startswith('11'):
+                name=data[temp][2]
+                name=name.split('#')[0]
+                names1.append(name)
+                names1=list(set(names1))
+            elif eachh==data[temp][0] and data[temp][1].startswith('15'):
+                name=data[temp][2]
+                name=name.split('#')[0]
+                names2.append(name)
+                names2=list(set(names2))
+            temp+=1
+        attendance[f'{eachh}']=[names1,names2]      
+    
+    return(attendance)
 
 def search_by_name(name):
     try:
@@ -36,27 +70,19 @@ def search_by_name(name):
                 for eachhh in eachh:
                     if name in eachhh:
                         counter+=1
+                
+            
+        
         return counter
     except Exception as error:
         print("Something went wrong")
         print("Error" + str(error))
 
-def to_get_dict():
-    for eachh in dates:
-        legnth_of_data_set=len(data)
-        names1=[]
-        names2=[]
-        temp=0
-        while temp<legnth_of_data_set:
-            if eachh==data[temp][0] and data[temp][1].startswith('11'):
-                names1.append(data[temp][2])
-                names1=list(set(names1))
-            elif eachh==data[temp][0] and data[temp][1].startswith('15'):
-                names2.append(data[temp][2])
-                names2=list(set(names2))
-            temp+=1
-        attendance[f'{eachh}']=[names1,names2]      
-    return(attendance)
+
+        
+
+
+
 
 def overall_attendance():
      
@@ -92,7 +118,7 @@ def weekly_attendance():
         try:
             print(attendance[f'{each}'])
         except Exception as error:
-            print("Error" + str(error))
+            print("No data Found for ->   " + str(error))
     return dated
 
 def yearly_attendance():
@@ -118,7 +144,7 @@ def yearly_attendance():
         try:
             print(attendance[f'{each}'])
         except Exception as error:
-            print("Error" + str(error))
+            print("No data Found for ->   " + str(error))
     return(dated)
 
 def monthly_attendance():
@@ -144,8 +170,9 @@ def monthly_attendance():
         try:
             print(attendance[f'{each}'])
         except Exception as error:
-            print("Error" + str(error))
+            print("No data Found for ->   " + str(error))
     return(dated)
+
 
 def visualize_bar_overall_attendance():
     x=[]
@@ -164,13 +191,41 @@ def visualize_pie_graph_search_by_name(name):
     print(count)
     y = [len(dates*2),count]
     mylabels = [f"{name} {count}",f"overall attendance {len(dates*2)}"]
+
     plt.pie(y, labels = mylabels,  startangle = 0)
     plt.show() 
+
+
+def compare(names_to_compare):
+    x,y=[],[]
+    for name in names_to_compare:
+        counter=search_by_name(name)
+        x.append(name)
+        y.append(counter)
+    x.append('Total dates')
+    y.append(len(dates)*2)
+    plt.barh(x,y)
+    plt.show()
+
+def pie_compare(namess):
+    y=[]
+    mylabels=[]
+    for name in namess:
+        count=search_by_name(name)
+        print(count)
+        y.append(count)
+        mylabels.append(f"{name} {count}")
+
+    plt.pie(y, labels = mylabels,  startangle = 0)
+    plt.show() 
+
 
 def weeklY_bar():
     weekly_attendees={}
     
     dated=weekly_attendance()
+    #print(dated)
+    
     for each in dated:
         
         for name in names:
@@ -181,16 +236,42 @@ def weeklY_bar():
                     
                     if name in eachhh:
                         counter+=1
-                weekly_attendees[f'{name}']=counter
+                    weekly_attendees[f'{name}']=counter
 
     y =list(weekly_attendees.values())
 
     x =list(weekly_attendees.keys())
     
+    plt.barh(x,y)
+    plt.show()
+
+
+future_featur='''
+def monthly_bar():
+    monthly_attendees={}
+    
+    dated=monthly_attendance()
+    for each in dated:
+        
+        for name in names:
+            counter=0
+            for eachh in attendance[f'{each}']:
+                
+                for eachhh in eachh:
+                    
+                    if name in eachhh:
+                        counter+=1
+                monthly_attendees[f'{name}']=counter
+
+    y =list(monthly_attendees.values())
+
+    x =list(monthly_attendees.keys())
+    
 
     plt.barh(x,y)
     plt.show()
-    
+'''
+
 def cli_conversion():
     while True:
         print('Do you want to continue: Y/N')
@@ -201,7 +282,9 @@ def cli_conversion():
         print('For yearly attendance press 5')
         print('For overall attenadce graph press 6')
         print('For pie graph for person press 7')
-        print('For weekly bar graph for person press 8')
+        print('For weekly bar graph of week press 8')
+        print('For bar graph of comparision press 9')
+        print('For pie graph of comparision press 10')
 
         choice=int(input('Enter:  '))
 
@@ -223,6 +306,14 @@ def cli_conversion():
             visualize_pie_graph_search_by_name(input('Enter name:   '))
         elif choice ==8:
             weeklY_bar()
+        elif choice ==9:
+            names_to_compare=input('Enter name you want to compare seperated by a (,)   ->     ')
+            names_to_compare=names_to_compare.split(',')
+            compare(names_to_compare)
+        elif choice ==10:
+            names_to_compare=input('Enter name you want to compare seperated by a (,)   ->     ')
+            names_to_compare=names_to_compare.split(',')
+            pie_compare(names_to_compare)
         else:
             print('wrong input')
 
@@ -230,6 +321,8 @@ def cli_conversion():
         to_continue=input('Enter:   ').capitalize()
         if to_continue=='N':
             break
+
+
 
 # Driver code
 if __name__ == '__main__':
@@ -244,7 +337,10 @@ if __name__ == '__main__':
     # monthly_attendance()
     # yearly_attendance()
     cli_conversion()
-    #visualize_bar_overall_attendance()
+    # visualize_bar_overall_attendance()
     # visualize_pie_graph_search_by_name('XHunter')
-    #weeklY_bar()
-    
+    # weeklY_bar()
+    #monthly_bar()
+    #compare('Ritesh','BenZee')
+
+
