@@ -221,32 +221,30 @@ def pie_compare(namess):
     plt.pie(y, labels = mylabels,  startangle = 0)
     plt.show() 
 
-
 def weeklY_bar():
     weekly_attendees={}
+    weekly_name=[]
     
     dated=weekly_attendance()
+    for date in dated:
+        for each in attendance[f'{date}']:
+            for eachh in each:
+                weekly_name.append(eachh)
     
-    for each in dated:
-        
-        for name in names:
-            counter=0
-            for eachh in attendance[f'{each}']:
-                
-                for eachhh in eachh:
-                    
-                    if name in eachhh:
-                        counter+=1
-                    weekly_attendees[f'{name}']=counter
-
+    for each in names:
+        counter=0
+        counter=weekly_name.count(each)
+        weekly_attendees[f'{each}']=counter
+    print(weekly_attendees)
     y =list(weekly_attendees.values())
 
     x =list(weekly_attendees.keys())
-    
+
+    y.append(10)
+    x.append('Total attendance')
     plt.barh(x,y)
+    plt.title('TOTAL WEEKLY ATTENDANCE')
     plt.show()
-
-
 
 def cli_conversion():
     while True:
