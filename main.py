@@ -8,6 +8,7 @@ names=[]
 attendance={}
 attendees={}
 
+
 def input_csv():
     with open("data.csv", "r") as file:
         for line in file.readlines():
@@ -37,13 +38,11 @@ def to_get_dict():
         while temp<legnth_of_data_set:
             if each==data[temp][0] and data[temp][1].startswith('11'):
                 name=data[temp][2]
-                name=name.split('#')[0]
                 name=name.lower()
                 names1.append(name)
                 names1=list(set(names1))
             elif each==data[temp][0] and data[temp][1].startswith('15'):
                 name=data[temp][2]
-                name=name.split('#')[0]
                 name=name.lower()
                 names2.append(name)
                 names2=list(set(names2))
@@ -105,6 +104,7 @@ def weekly_attendance():
             print(attendance[f'{each}'])
         except Exception as error:
             print("No data Found for ->   " + str(error))
+        
     return dated
 
 def yearly_attendance():
@@ -161,6 +161,7 @@ def monthly_attendance():
 
 
 def visualize_bar_overall_attendance():
+    dateandtime=str(datetime.date.today())
     x, y = [],[]
     for each in names:
         count=search_by_name(each)
@@ -170,18 +171,24 @@ def visualize_bar_overall_attendance():
     x.append('Total shifts')
     plt.title('Overall attendance in Bar Chart')
     plt.barh(x, y, color ='green')
+    plt.savefig('./graphs/overall_bar_graph/overall_{dateandtime}.jpg') 
     plt.show()
 
 def visualize_pie_graph_search_by_name(name):
+    dateandtime=str(datetime.date.today())
+    
     count=search_by_name(name)
     y = [len(dates*2),count]
     mylabels = [f"{name} {count}",f"overall attendance {len(dates*2)}"]
     plt.title('Employee attendance in Pie Chart')
     plt.pie(y, labels = mylabels,  startangle = 0)
-    plt.show() 
+    plt.savefig(f'./graphs/person_pie_graph/{name}_{dateandtime}.jpg') 
+    plt.show()
+    
 
 
 def compare(names_to_compare):
+    dateandtime=str(datetime.date.today())
     x,y = [],[]
     for name in names_to_compare:
         name=name.lower()
@@ -192,9 +199,11 @@ def compare(names_to_compare):
     y.append(len(dates)*2)
     plt.title('Comparision of attendance in bar Chart')
     plt.barh(x,y,color ='Red')
+    plt.savefig(f'./graphs/comparision_bar_graph/{names_to_compare}_{dateandtime}.jpg')
     plt.show()
 
 def pie_compare(namess):
+    dateandtime=str(datetime.date.today())
     y,mylabels=[],[]
     for name in namess:
         name=name.lower()
@@ -204,6 +213,7 @@ def pie_compare(namess):
         mylabels.append(f"{name} {count}")
     plt.title('Comparision of attendance in Pie Chart')
     plt.pie(y, labels = mylabels,  startangle = 0)
+    plt.savefig(f'./graphs/comparision_pie_graph/{namess}_{dateandtime}.jpg')
     plt.show() 
 
 def weekly_bar():
@@ -284,7 +294,44 @@ def cli_conversion():
         else:
             print('wrong input. Please try again')
 
+
+
+def bot():
+    import discord
+    i=None
+    client=discord.Client()
+    @client.event
+    async def on_ready():
+        print(f'logged in as {client.user}')
+
+    
+    @client.event
+    async def on_message(message):
+        if message.author == client.user:
+            return      
+        if message.content.startswith('$attendance'):
+            #name=message.content.split(' ')[1]
+            name=str(message.author)
+            name=name.lower()
+            counter=search_by_name(name)
+            await message.channel.send(f'Name-> {name} Shifts Present-> {counter} total Shifts-> {len(dates)*2}')
+
+        if message.content.startswith('$2'):
+            attendance=overall_attendance()
+            await message.channel.send(attendance)    
+            
+    
+
+    
+    client.run('ODQ3Mzc5MDY4NjI5Mjg2OTIz.YK9NQQ.x86S1juOf0au2Y0yplrCRH8Jc2o')
+
+
 # Driver code
 if __name__ == '__main__':
     initialize()
-    cli_conversion()
+    # cli_conversion()
+    # bot()
+    #weekly_attendance()
+    pie_compare(['benzee','ritesh','xhunter','panther'])
+
+
