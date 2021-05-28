@@ -1,12 +1,26 @@
 import datetime
 import matplotlib.pyplot as plt
 import time
+import os
+
+from numpy import save
 # GLOBAL VALUES
 data=[]
 dates=[]
 names=[]
 attendance={}
 attendees={}
+func_list='''For your attendance type $my_attendance
+            For attendance by name attendance type $overall_attendance_of some_name
+            For total attendance type $total_attendance
+            For weekly attendance type $weekly_attendance
+            For monthly attendance type $monthly_attendance
+            For overall attenadce graph type $overall_attendance
+            For pie graph for person type $pie_graph_of somename
+            For bar graph of comparision type $compare_pie names seperated by a ,
+            For bar graph of comparision type $compare_bar names seperated by a ,
+
+    '''
 
 
 def input_csv():
@@ -162,6 +176,7 @@ def monthly_attendance():
 
 def visualize_bar_overall_attendance():
     dateandtime=str(datetime.date.today())
+    save_filename=f'./graphs/overall_bar_graph/overall_{dateandtime}.jpg'
     x, y = [],[]
     for each in names:
         count=search_by_name(each)
@@ -171,24 +186,34 @@ def visualize_bar_overall_attendance():
     x.append('Total shifts')
     plt.title('Overall attendance in Bar Chart')
     plt.barh(x, y, color ='green')
-    plt.savefig('./graphs/overall_bar_graph/overall_{dateandtime}.jpg') 
-    plt.show()
+    figure = plt.gcf()
+    figure.set_size_inches(16, 8)
+    plt.savefig(save_filename) 
+    plt.show(block=False)
+    plt.close()
+    return save_filename
 
 def visualize_pie_graph_search_by_name(name):
     dateandtime=str(datetime.date.today())
-    
+    save_filename=f'./graphs/person_pie_graph/{name}_{dateandtime}.jpg'
     count=search_by_name(name)
     y = [len(dates*2),count]
     mylabels = [f"{name} {count}",f"overall attendance {len(dates*2)}"]
     plt.title('Employee attendance in Pie Chart')
     plt.pie(y, labels = mylabels,  startangle = 0)
-    plt.savefig(f'./graphs/person_pie_graph/{name}_{dateandtime}.jpg') 
-    plt.show()
+    figure = plt.gcf()
+    figure.set_size_inches(8, 8)
+    plt.savefig(save_filename)
+    plt.show(block=False)
+    time.sleep(.1)
+    plt.close()
+    return(save_filename)
     
 
 
-def compare(names_to_compare):
+def compare_bar(names_to_compare):
     dateandtime=str(datetime.date.today())
+    save_filename=f'./graphs/comparision_bar_graph/{names_to_compare}_{dateandtime}.jpg'
     x,y = [],[]
     for name in names_to_compare:
         name=name.lower()
@@ -199,11 +224,16 @@ def compare(names_to_compare):
     y.append(len(dates)*2)
     plt.title('Comparision of attendance in bar Chart')
     plt.barh(x,y,color ='Red')
-    plt.savefig(f'./graphs/comparision_bar_graph/{names_to_compare}_{dateandtime}.jpg')
-    plt.show()
+    figure = plt.gcf()
+    figure.set_size_inches(16, 8)
+    plt.savefig(save_filename)
+    plt.show(block=False)
+    plt.close()
+    return(save_filename)
 
 def pie_compare(namess):
     dateandtime=str(datetime.date.today())
+    save_filename=f'./graphs/comparision_pie_graph/{namess}_{dateandtime}.jpg'
     y,mylabels=[],[]
     for name in namess:
         name=name.lower()
@@ -213,20 +243,25 @@ def pie_compare(namess):
         mylabels.append(f"{name} {count}")
     plt.title('Comparision of attendance in Pie Chart')
     plt.pie(y, labels = mylabels,  startangle = 0)
-    plt.savefig(f'./graphs/comparision_pie_graph/{namess}_{dateandtime}.jpg')
-    plt.show() 
-
+    figure = plt.gcf()
+    figure.set_size_inches(8, 8)
+    plt.savefig(save_filename)
+    plt.show(block=False)
+    time.sleep(.1)
+    plt.close()
+    return(save_filename)
 def weekly_bar():
+    dateandtime=str(datetime.date.today())
+    save_filename=f'./graphs/weekly_bar/weekly_bar_of_{dateandtime}.jpg'
     weekly_attendees={}
     weekly_name=[]
-    
     dated=weekly_attendance()
     for date in dated:
-        for each_attendance in attendance[f'{date}']:
-            for each in each_attendance:
-                weekly_name.append(each)
-    
-    for each in names:
+        if date in attendance.keys():
+            for each_attendance in attendance[f'{date}']:
+                for each in each_attendance:
+                    weekly_name.append(each)    
+    for each in weekly_name:
         counter=0
         counter=weekly_name.count(each)
         weekly_attendees[f'{each}']=counter
@@ -238,61 +273,49 @@ def weekly_bar():
     x.append('Total attendance')
     plt.barh(x,y, color='brown')
     plt.title('Total Weekly Attendance')
-    plt.show()
+    figure = plt.gcf()
+    figure.set_size_inches(16, 8)
+    plt.savefig(save_filename)
+    plt.show(block=False)
+    time.sleep(.1)
+    plt.close()
+    return(save_filename)
 
 
+def monthly_bar():
+    dateandtime=str(datetime.date.today())
+    monthly_attendees={}
+    monthly_name=[]
+    total_dates=0
+    save_filename=f'./graphs/monthly_bar/monthly_bar_of_{dateandtime}.jpg'
+    dated=monthly_attendance()
+    for date in dated:
+        if date in attendance.keys():
+            total_dates+=1
+            for each_attendance in attendance[f'{date}']:
+                for each in each_attendance:
+                    monthly_name.append(each)    
+    for each in monthly_name:
+        counter=0
+        counter=monthly_name.count(each)
+        monthly_attendees[f'{each}']=counter
+    y =list(monthly_attendees.values())
 
-def cli_conversion():
-    choice = None
-    while choice != 0:
-        try:
-            time.sleep(.5)
-            print("For Attendance by name press 1")
-            print("For total attendance press 2")
-            print("For weekly attendance press 3")
-            print("For monthly attendance press 4")
-            print('For yearly attendance press 5')
-            print('For overall attenadce graph press 6')
-            print('For pie graph for person press 7')
-            print('For weekly bar graph of week press 8')
-            print('For bar graph of comparision press 9')
-            print('For pie graph of comparision press 10')
-            print('For exiting press 0') 
-            choice = int(input("Enter selection: "))
-        except Exception as error:
-            print("Wrong input enter. Please try again")
-        
+    x =list(monthly_attendees.keys())
 
-        if choice ==1:
-            name=input('Enter name:   ')
-            counter=search_by_name(name)
-            print("Searched name: " + name ,", " + str(counter) + "/" + str(len(dates)*2))
-        elif choice ==2:
-            print(overall_attendance())
-        elif choice ==3:
-            weekly_attendance()
-        elif choice ==4:
-            monthly_attendance()
-        elif choice ==5:
-            yearly_attendance()
-        elif choice ==6:
-            visualize_bar_overall_attendance()
-        elif choice ==7:
-            visualize_pie_graph_search_by_name(input('Enter name:   '))
-        elif choice ==8:
-            weekly_bar()
-        elif choice ==9:
-            names_to_compare=input('Enter name you want to compare seperated by a (,)   ->     ')
-            names_to_compare=names_to_compare.split(',')
-            compare(names_to_compare)
-        elif choice ==10:
-            names_to_compare=input('Enter name you want to compare seperated by a (,)   ->     ')
-            names_to_compare=names_to_compare.split(',')
-            pie_compare(names_to_compare)
-        elif choice ==0:
-            exit(0)
-        else:
-            print('wrong input. Please try again')
+    y.append(total_dates*2)
+    x.append('Total attendance')
+    plt.barh(x,y, color='cyan')
+    plt.title('Total Monthly Attendance')
+    figure = plt.gcf()
+    figure.set_size_inches(16, 8)
+    plt.savefig(save_filename)
+    plt.show(block=False)
+    time.sleep(.1)
+    plt.close()
+    return(save_filename)
+
+
 
 
 
@@ -310,28 +333,61 @@ def bot():
         if message.author == client.user:
             return      
         if message.content.startswith('$attendance'):
-            #name=message.content.split(' ')[1]
+            await message.channel.send(func_list)
+
+        if message.content.startswith('$my_attendance'):
             name=str(message.author)
             name=name.lower()
             counter=search_by_name(name)
             await message.channel.send(f'Name-> {name} Shifts Present-> {counter} total Shifts-> {len(dates)*2}')
+        
+        if message.content.startswith('$overall_attendance_of'):
+            name=message.content.split(' ')[1]
+            name=name.lower()
+            counter=search_by_name(name)
+            await message.channel.send(f'Name-> {name} Shifts Present-> {counter} total Shifts-> {len(dates)*2}')
 
-        if message.content.startswith('$2'):
+        if message.content.startswith('$total_attendance'):
             attendance=overall_attendance()
-            await message.channel.send(attendance)    
-            
-    
+            await message.channel.send(attendance)  
 
+        if message.content.startswith('$weekly_attendance'):
+            save_filename=weekly_bar()
+            await message.channel.send(file=discord.File(save_filename))
+        
+        if message.content.startswith('$monthly_attendance'):
+            save_filename=monthly_bar()
+            await message.channel.send(file=discord.File(save_filename))
+
+        if message.content.startswith('$pie_graph_of'):
+            name=str(message.content)
+            name=name.split()[1]
+            save_filename=visualize_pie_graph_search_by_name(name)
+            await message.channel.send(file=discord.File(save_filename))
+
+        if message.content.startswith('$compare_bar'):
+            names=str(message.content)
+            names=names.split()[1]
+            names=names.split(',')
+            save_filename=compare_bar(names)
+            await message.channel.send(file=discord.File(save_filename))
+        
+        if message.content.startswith('$compare_pie'):
+            names=str(message.content)
+            names=names.split()[1]
+            names=names.split(',')
+            save_filename=pie_compare(names)
+            await message.channel.send(file=discord.File(save_filename))
+
+        
+    your_token='The key of your bot from discord bot developer'  
+        
     
-    client.run('ODQ3Mzc5MDY4NjI5Mjg2OTIz.YK9NQQ.x86S1juOf0au2Y0yplrCRH8Jc2o')
+    client.run(your_token)
 
 
 # Driver code
 if __name__ == '__main__':
     initialize()
-    # cli_conversion()
-    # bot()
-    #weekly_attendance()
-    pie_compare(['benzee','ritesh','xhunter','panther'])
-
-
+    bot()
+    
